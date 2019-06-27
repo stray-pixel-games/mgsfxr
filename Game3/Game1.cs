@@ -3,8 +3,7 @@ using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
-
-
+using System.Linq;
 
 namespace Game3
 {
@@ -17,6 +16,9 @@ namespace Game3
         SpriteBatch spriteBatch;
         SFXR mysound = new SFXR();
 
+        private KeyboardState lastState;
+        private KeyboardState thisState;
+        private SFXGenerator sfxGen;
 
 
 
@@ -54,9 +56,17 @@ namespace Game3
             //test = new byte[30000];
 
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            mysound.coin();
-            //mysound.laser();
+            /*
             mysound.ResetSample(false);
+            byte[] buffer = mysound.laser();
+            SoundEffect se = new SoundEffect(buffer, 44100, AudioChannels.Mono);
+            while (true)
+            {
+                se.Play();
+            }
+            */
+            //mysound.laser();
+            sfxGen = new SFXGenerator();
             //playing_sample = true;
 
             //while (playing_sample) { 
@@ -88,16 +98,71 @@ namespace Game3
         /// checking for collisions, gathering input, and playing audio.
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
-        int time;
-        int timelimit = 60;
-
         protected override void Update(GameTime gameTime)
         {
             
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+            lastState = thisState;
+            thisState = Keyboard.GetState();
+            if (lastState.IsKeyDown(Keys.D1) == false && thisState.IsKeyDown(Keys.D1) == true)
+            {
+                SoundParams parms = sfxGen.RandomCoin();
+                byte[] buf = mysound.GenerateFullSound(parms, 4);
+                SoundEffect se = new SoundEffect(buf, 44100, AudioChannels.Mono);
+                se.Play();
+            }
+            if (lastState.IsKeyDown(Keys.D2) == false && thisState.IsKeyDown(Keys.D2) == true)
+            {
+                SoundParams parms = sfxGen.Laser();
+                byte[] buf = mysound.GenerateFullSound(parms, 4);
+                SoundEffect se = new SoundEffect(buf, 44100, AudioChannels.Mono);
+                se.Play();
+            }
+            if (lastState.IsKeyDown(Keys.D3) == false && thisState.IsKeyDown(Keys.D3) == true)
+            {
+                SoundParams parms = sfxGen.Explosion();
+                byte[] buf = mysound.GenerateFullSound(parms, 4);
+                SoundEffect se = new SoundEffect(buf, 44100, AudioChannels.Mono);
+                se.Play();
+            }
+
+            if (lastState.IsKeyDown(Keys.D4) == false && thisState.IsKeyDown(Keys.D4) == true)
+            {
+                SoundParams parms = sfxGen.Powerup();
+                byte[] buf = mysound.GenerateFullSound(parms, 4);
+                SoundEffect se = new SoundEffect(buf, 44100, AudioChannels.Mono);
+                se.Play();
+            }
+
+            if (lastState.IsKeyDown(Keys.D5) == false && thisState.IsKeyDown(Keys.D5) == true)
+            {
+                SoundParams parms = sfxGen.HitHurt();
+                byte[] buf = mysound.GenerateFullSound(parms, 4);
+                SoundEffect se = new SoundEffect(buf, 44100, AudioChannels.Mono);
+                se.Play();
+            }
+
+            if (lastState.IsKeyDown(Keys.D6) == false && thisState.IsKeyDown(Keys.D6) == true)
+            {
+                SoundParams parms = sfxGen.Jump();
+                byte[] buf = mysound.GenerateFullSound(parms, 4);
+                SoundEffect se = new SoundEffect(buf, 44100, AudioChannels.Mono);
+                se.Play();
+            }
+
+            if (lastState.IsKeyDown(Keys.D7) == false && thisState.IsKeyDown(Keys.D7) == true)
+            {
+                SoundParams parms = sfxGen.BlipSelect();
+                byte[] buf = mysound.GenerateFullSound(parms, 4);
+                SoundEffect se = new SoundEffect(buf, 44100, AudioChannels.Mono);
+                se.Play();
+            }
+
+
             // TODO: Add your update logic here
+            /*
             if (mysound.State() != SoundState.Playing)
             {
                 time += 1;
@@ -110,7 +175,7 @@ namespace Game3
                 }
 
             }
-
+            */
             base.Update(gameTime);
         }
 

@@ -45,7 +45,9 @@
     <Compile Include="Game1.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SFXGenerator.cs" />
     <Compile Include="SFXR.cs" />
+    <Compile Include="SoundParams.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">
