@@ -17,7 +17,7 @@ namespace Game3
 
         public SFXGenerator(int seed)
         {
-            rand = new Random();
+            rand = new Random(seed);
         }
 
         
